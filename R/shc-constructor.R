@@ -432,7 +432,7 @@ shc <- function(x, metric = "euclidean", vecmet = NULL, matmet = NULL,
     if (!is.null(matmet)) {
         hc_dat <- hclust(matmet(x), method=linkage)
     } else if (metric == "cor") {
-        dmat <- 1 - WGCNA::cor(t(x))
+        dmat <- 1 - WGCNA::cor(t(x), method="spearman")
         hc_dat <- hclust(as.dist(dmat), method=linkage)
     } else if (rcpp) {
         hc_dat <- Rclusterpp::Rclusterpp.hclust(x, method=linkage, 
