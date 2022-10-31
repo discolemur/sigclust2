@@ -430,15 +430,19 @@ shc <- function(x, metric = "euclidean", vecmet = NULL, matmet = NULL,
 ## parse clustering parameters to produce hclust object
 .cluster_shc <- function(x, metric, matmet, linkage, l, rcpp) {
     if (!is.null(matmet)) {
+        print("Info: using matmet")
         hc_dat <- hclust(matmet(x), method=linkage)
     } else if (metric == "cor") {
         print("Info: using Spearman correlation")
         dmat <- 1 - WGCNA::cor(t(x), method="spearman")
         hc_dat <- hclust(as.dist(dmat), method=linkage)
     } else if (rcpp) {
+        print("Info: using rcpp")
         hc_dat <- Rclusterpp::Rclusterpp.hclust(x, method=linkage, 
                                                 distance=metric, p=l)
     } else {
+        print("Info: using dist with metric")
+        print(metric)
         hc_dat <- hclust(dist(x, method=metric, p=l), method=linkage)
     }
     hc_dat
